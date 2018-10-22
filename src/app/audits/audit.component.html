@@ -84,7 +84,7 @@
                         <td>{{sel.Enviroment.name}}</td>
                         <td>{{sel.User.name}}</td>
                         <td>                    
-                          <button class="btn btn-danger btn-icon no-margin" (click)="removeEvaluation(i)">
+                          <button class="btn btn-danger btn-icon no-margin" (click)="removeEvaluation(i)" [disabled]="sel.id">
                             <i class="icofont icofont-trash" title="Você não pode remover uma auditoria concluida"></i>
                           </button>
                         </td>
