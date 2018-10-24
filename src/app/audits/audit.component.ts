@@ -32,6 +32,8 @@ export class AuditComponent implements OnInit {
   }
   
   audit: Audit = new Audit();
+  auditOld: Audit = new Audit();
+
   saveAudit: SaveAuditDto;
   evaluations = new Array<Evaluation>();
   enviroments: Enviroment[];
@@ -199,9 +201,11 @@ export class AuditComponent implements OnInit {
       .subscribe(res => {
         this.getValidation(res);
         this.auditForm.reset();
+        this.validadeUpdateEvaluations(this.audit.evaluations);
           this.saveAudit.evaluations.forEach( env => {
             env.audits_id = this.saveAudit.id;
           });
+
         this._evaluationService.save(this.saveAudit)
           .subscribe(res => {
             this.enviromentsList = [];
@@ -211,13 +215,37 @@ export class AuditComponent implements OnInit {
     }
   }
 
-  update(audit: Audit): void {
+  validadeUpdateEvaluations(evaluations: Array<Evaluation>){
+    let newEvaluation = [];
+    let updateEvaluation = [];
+    let deleteEvaluation = [];
+    evaluations.forEach(evaluation => {
+      let env  = this.auditOld.evaluations.find(envOld => envOld.id === evaluation.id);
+      if(!env){
+        newEvaluation.push(env);
+      } else if(env.Enviroment.id != evaluation.Enviroment.id || env.User.id !== evaluation.User.id) {
+        updateEvaluation.push(env);
+      } else {
+        deleteEvaluation.push(env);
+      }
+    });
+    console.log('newEvaluation',newEvaluation);
+    console.log('updateEvaluation',updateEvaluation);
+    console.log('deleteEvaluation',deleteEvaluation);
+
+  }
+
+  async update(audit: Audit): Promise<void> {
       this.audit = audit;
+      this.auditOld = audit;
       this.evaluations = audit.evaluations;
       //this.evaluation.users_id = audit.users_id; 
       this.audit.unit.id  = audit.unit.id;
       //moment.locale('pt-BR');
-      this.loadEnviromentsByUnit(audit.unit.id);
+      await this.loadEnviromentsByUnit(audit.unit.id);
+      this.audit.evaluations.forEach(x =>{
+        this.enviromentsList = this.enviromentsList.filter( env => env.id != x.Enviroment.id);
+      })
       this.period = [moment(audit.initial_date).toDate(), moment(audit.due_date).toDate()];
       this.audit = audit;
      //this.selectedEnviroment.push(this.audit.enviroments_id.toString());
