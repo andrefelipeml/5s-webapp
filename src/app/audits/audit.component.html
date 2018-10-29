@@ -143,7 +143,7 @@
           [messages]="messageAuditsGrid"
           [rows]="audits"
           (page)="onPage($event)">
-          <ngx-datatable-row-detail #myDetailRow  [rowHeight]="auto" (toggle)="onDetailToggle($event)">
+          <ngx-datatable-row-detail #myDetailRow  [rowHeight]="'auto'" (toggle)="onDetailToggle($event)">
             <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
               <div style="padding-left:35px">
                   <div class="table-responsive">

@@ -23,6 +23,7 @@ import { EnviromentService } from './enviroments/enviroment.service';
 import { QuestionService } from './questions/question.service';
 import { AuditService } from './audits/audit.service';
 import { EvaluationService } from './evaluations/evaluation.service';
+import { PageNotFoundComponent } from './components/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { EvaluationService } from './evaluations/evaluation.service';
     AuthLayoutComponent,
     BreadcrumbsComponent,
     TitleComponent,
+    PageNotFoundComponent
   ],
   imports: [
     CommonModule,
